@@ -1,0 +1,82 @@
+{
+  "annotations": {"list": []},
+  "editable": true,
+  "panels": [
+    {
+      "title": "Throughput: Telemetry Datapoints / Min",
+      "type": "timeseries",
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0},
+      "targets": [{"expr": "rate(telemetry_datapoints_processed_total[1m]) * 60", "legendFormat": "Datapoints/min"}],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "thresholdsStyle": {"mode": "line"}
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {"color": "yellow", "value": null},
+              {"color": "green", "value": 1000}
+            ]
+          },
+          "unit": "short"
+        }
+      }
+    },
+    {
+      "title": "P95 & P99 API Latency (<15ms Target)",
+      "type": "timeseries",
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0},
+      "targets": [
+        {"expr": "histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket[1m])) by (le)) * 1000", "legendFormat": "p95 (ms)"},
+        {"expr": "histogram_quantile(0.99, sum(rate(http_request_duration_seconds_bucket[1m])) by (le)) * 1000", "legendFormat": "p99 (ms)"}
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "thresholdsStyle": {"mode": "line"}
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {"color": "green", "value": null},
+              {"color": "yellow", "value": 15},
+              {"color": "red", "value": 25}
+            ]
+          },
+          "unit": "ms"
+        }
+      }
+    },
+    {
+      "title": "Cumulative Processed Telemetry Count",
+      "type": "stat",
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8},
+      "targets": [{"expr": "telemetry_datapoints_processed_total", "legendFormat": "Total Points"}],
+      "fieldConfig": {
+        "defaults": {"unit": "short"}
+      }
+    },
+    {
+      "title": "Average Request Latency",
+      "type": "stat",
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 8},
+      "targets": [{"expr": "(rate(http_request_duration_seconds_sum[1m]) / rate(http_request_duration_seconds_count[1m])) * 1000", "legendFormat": "Avg Latency"}],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ms",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {"color": "green", "value": null},
+              {"color": "red", "value": 15}
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "schemaVersion": 39,
+  "title": "Telemetry Throughput & Latency SLA (Sub-15ms)",
+  "uid": "telemetry-throughput-sla"
+}

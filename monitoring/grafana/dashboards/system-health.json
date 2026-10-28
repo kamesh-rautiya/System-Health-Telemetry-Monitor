@@ -1,0 +1,33 @@
+{
+  "annotations": {"list": []},
+  "editable": true,
+  "panels": [
+    {
+      "title": "CPU Usage",
+      "type": "timeseries",
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0},
+      "targets": [{"expr": "system_cpu_percent", "legendFormat": "CPU %"}]
+    },
+    {
+      "title": "Memory Usage",
+      "type": "timeseries",
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0},
+      "targets": [{"expr": "system_memory_percent", "legendFormat": "Memory %"}]
+    },
+    {
+      "title": "Disk Usage",
+      "type": "timeseries",
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8},
+      "targets": [{"expr": "system_disk_percent", "legendFormat": "Disk %"}]
+    },
+    {
+      "title": "API Health Checks",
+      "type": "stat",
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 8},
+      "targets": [{"expr": "health_check_total", "legendFormat": "Health Checks"}]
+    }
+  ],
+  "schemaVersion": 39,
+  "title": "System Health Monitor",
+  "uid": "system-health"
+}

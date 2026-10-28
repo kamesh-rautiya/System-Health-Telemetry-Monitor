@@ -1,0 +1,89 @@
+{
+  "annotations": {"list": []},
+  "editable": true,
+  "panels": [
+    {
+      "title": "CPU Utilization & Alert Thresholds",
+      "type": "timeseries",
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0},
+      "targets": [{"expr": "system_cpu_percent", "legendFormat": "CPU Usage %"}],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "thresholdsStyle": {"mode": "line"}
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {"color": "green", "value": null},
+              {"color": "yellow", "value": 80},
+              {"color": "red", "value": 90}
+            ]
+          },
+          "unit": "percent"
+        }
+      }
+    },
+    {
+      "title": "Memory Utilization & Alert Thresholds",
+      "type": "timeseries",
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0},
+      "targets": [{"expr": "system_memory_percent", "legendFormat": "Memory Usage %"}],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "thresholdsStyle": {"mode": "line"}
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {"color": "green", "value": null},
+              {"color": "yellow", "value": 80},
+              {"color": "red", "value": 90}
+            ]
+          },
+          "unit": "percent"
+        }
+      }
+    },
+    {
+      "title": "Filesystem Disk Utilization",
+      "type": "gauge",
+      "gridPos": {"h": 8, "w": 8, "x": 0, "y": 8},
+      "targets": [{"expr": "system_disk_percent", "legendFormat": "Root Disk %"}],
+      "fieldConfig": {
+        "defaults": {
+          "min": 0,
+          "max": 100,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {"color": "green", "value": null},
+              {"color": "yellow", "value": 85},
+              {"color": "red", "value": 95}
+            ]
+          },
+          "unit": "percent"
+        }
+      }
+    },
+    {
+      "title": "Host Node Uptime",
+      "type": "stat",
+      "gridPos": {"h": 8, "w": 8, "x": 8, "y": 8},
+      "targets": [{"expr": "system_uptime_seconds", "legendFormat": "Uptime"}],
+      "fieldConfig": {
+        "defaults": {"unit": "s"}
+      }
+    },
+    {
+      "title": "Health Check Volume",
+      "type": "stat",
+      "gridPos": {"h": 8, "w": 8, "x": 16, "y": 8},
+      "targets": [{"expr": "rate(health_check_total[1m]) * 60", "legendFormat": "Requests / min"}]
+    }
+  ],
+  "schemaVersion": 39,
+  "title": "Node Health & Alert Thresholds",
+  "uid": "node-health-overview"
+}

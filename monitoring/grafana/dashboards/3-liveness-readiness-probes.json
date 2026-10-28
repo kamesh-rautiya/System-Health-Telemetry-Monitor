@@ -1,0 +1,58 @@
+{
+  "annotations": {"list": []},
+  "editable": true,
+  "panels": [
+    {
+      "title": "Liveness Probe Status",
+      "type": "stat",
+      "gridPos": {"h": 8, "w": 8, "x": 0, "y": 0},
+      "targets": [{"expr": "probe_liveness_status", "legendFormat": "Liveness"}],
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [
+            {"options": {"0": {"text": "DOWN", "color": "red"}, "1": {"text": "UP", "color": "green"}}, "type": "value"}
+          ]
+        }
+      }
+    },
+    {
+      "title": "Readiness Probe Status",
+      "type": "stat",
+      "gridPos": {"h": 8, "w": 8, "x": 8, "y": 0},
+      "targets": [{"expr": "probe_readiness_status", "legendFormat": "Readiness"}],
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [
+            {"options": {"0": {"text": "NOT READY", "color": "red"}, "1": {"text": "READY", "color": "green"}}, "type": "value"}
+          ]
+        }
+      }
+    },
+    {
+      "title": "Health Check Failure Rate",
+      "type": "gauge",
+      "gridPos": {"h": 8, "w": 8, "x": 16, "y": 0},
+      "targets": [{"expr": "sum(rate(http_request_duration_seconds_count{status=~\"5..\"}[1m])) or vector(0)", "legendFormat": "5xx Errors/s"}],
+      "fieldConfig": {
+        "defaults": {
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [{"color": "green", "value": null}, {"color": "red", "value": 0.01}]
+          }
+        }
+      }
+    },
+    {
+      "title": "Health Endpoint Probe Traffic History",
+      "type": "timeseries",
+      "gridPos": {"h": 8, "w": 24, "x": 0, "y": 8},
+      "targets": [
+        {"expr": "sum(rate(http_request_duration_seconds_count{endpoint=\"/health/liveness\"}[1m]))", "legendFormat": "Liveness Probes / s"},
+        {"expr": "sum(rate(http_request_duration_seconds_count{endpoint=\"/health/readiness\"}[1m]))", "legendFormat": "Readiness Probes / s"}
+      ]
+    }
+  ],
+  "schemaVersion": 39,
+  "title": "Liveness & Readiness Probes (MTTR Optimizer)",
+  "uid": "liveness-readiness-probes"
+}

@@ -1,0 +1,45 @@
+{
+  "annotations": {"list": []},
+  "editable": true,
+  "panels": [
+    {
+      "title": "Network Bandwidth - Ingress (Bytes/sec)",
+      "type": "timeseries",
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0},
+      "targets": [{"expr": "rate(system_network_bytes_recv[1m])", "legendFormat": "Rx Rate"}],
+      "fieldConfig": {
+        "defaults": {"unit": "Bps"}
+      }
+    },
+    {
+      "title": "Network Bandwidth - Egress (Bytes/sec)",
+      "type": "timeseries",
+      "gridPos": {"h": 12, "w": 12, "x": 12, "y": 0},
+      "targets": [{"expr": "rate(system_network_bytes_sent[1m])", "legendFormat": "Tx Rate"}],
+      "fieldConfig": {
+        "defaults": {"unit": "Bps"}
+      }
+    },
+    {
+      "title": "Disk Read Throughput",
+      "type": "timeseries",
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8},
+      "targets": [{"expr": "rate(system_disk_read_bytes[1m])", "legendFormat": "Disk Read"}],
+      "fieldConfig": {
+        "defaults": {"unit": "Bps"}
+      }
+    },
+    {
+      "title": "Disk Write Throughput",
+      "type": "timeseries",
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 8},
+      "targets": [{"expr": "rate(system_disk_write_bytes[1m])", "legendFormat": "Disk Write"}],
+      "fieldConfig": {
+        "defaults": {"unit": "Bps"}
+      }
+    }
+  ],
+  "schemaVersion": 39,
+  "title": "Network & Disk I/O Diagnostics",
+  "uid": "network-disk-io"
+}

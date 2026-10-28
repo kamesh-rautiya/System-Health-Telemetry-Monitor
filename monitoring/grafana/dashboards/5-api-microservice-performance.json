@@ -1,0 +1,33 @@
+{
+  "annotations": {"list": []},
+  "editable": true,
+  "panels": [
+    {
+      "title": "API Request Rate (RPS)",
+      "type": "timeseries",
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0},
+      "targets": [{"expr": "sum(rate(http_request_duration_seconds_count[1m])) by (method, endpoint)", "legendFormat": "{{method}} {{endpoint}}"}],
+      "fieldConfig": {
+        "defaults": {"unit": "reqps"}
+      }
+    },
+    {
+      "title": "HTTP Status Code Distribution",
+      "type": "piechart",
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0},
+      "targets": [{"expr": "sum(http_request_duration_seconds_count) by (status)", "legendFormat": "Status {{status}}"}]
+    },
+    {
+      "title": "95th Percentile Latency by Route",
+      "type": "timeseries",
+      "gridPos": {"h": 8, "w": 24, "x": 0, "y": 8},
+      "targets": [{"expr": "histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket[1m])) by (le, endpoint)) * 1000", "legendFormat": "{{endpoint}} p95 (ms)"}],
+      "fieldConfig": {
+        "defaults": {"unit": "ms"}
+      }
+    }
+  ],
+  "schemaVersion": 39,
+  "title": "API Microservice Performance & Traffic",
+  "uid": "api-microservice-performance"
+}

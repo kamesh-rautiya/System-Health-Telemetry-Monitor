@@ -1,0 +1,61 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test:
+    name: Run Unit Tests & Code Coverage
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Execute Automated Test Suite (Pytest)
+        run: |
+          pytest -v --junitxml=pytest-results.xml
+
+  build-and-compose:
+    name: Build Docker Image & Validate Compose Workflow
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Validate Docker Compose Configuration
+        run: |
+          docker compose config
+
+      - name: Build Telemetry Microservice Container
+        run: |
+          docker compose build --no-cache
+
+      - name: Test Multi-Container Stack Spin-up
+        run: |
+          docker compose up -d
+          sleep 10
+          docker compose ps
+          curl --fail http://localhost:8000/health/liveness || exit 1
+          curl --fail http://localhost:8000/health/readiness || exit 1
+          curl --fail http://localhost:8000/metrics || exit 1
+          docker compose down
