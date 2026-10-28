@@ -181,8 +181,8 @@ Hot-reload alert limits without requiring service restart:
 
 ```bash
 # Clone the repository
-git clone https://github.com/kameshr/system-health-monitor.git
-cd system-health-monitor
+git clone https://github.com/kamesh-rautiya/system-health-telemetry-monitor.git
+cd system-health-telemetry-monitor
 
 # Create and activate Python virtual environment
 python3 -m venv .venv
