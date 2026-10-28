@@ -1,3 +1,4 @@
+import asyncio
 import os
 import platform
 import socket
@@ -350,7 +351,7 @@ async def websocket_metrics(websocket: WebSocket):
                 "alerts": alerts,
             }
             await websocket.send_json(payload)
-            time.sleep(1.0)
+            await asyncio.sleep(1.0)
     except WebSocketDisconnect:
         pass
     except Exception:
